@@ -4,93 +4,110 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Beequora — Better conversations, every day</title>
-  <meta name="description" content="Fun, meaningful conversations — sparked by gentle prompts, conversation starters, and micro-coaching for friends, family, and teams.">
-  <meta name="robots" content="index,follow">
+  <meta name="description" content="Beequora — conversation starters, gentle prompts, and micro-coaching to spark meaningful talk.">
   <style>
-    :root{
-      --bg1:#F4F4F5;        /* light base */
-      --gold:#FBBF24;       /* Beequora gold */
-      --ink:#111;           /* dark text */
-      --muted:#333;         /* body text */
-      --surface:#FFFFFFE6;  /* card */
+    html, body { height: 100%; margin: 0; }
+    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif; background:#0B0B0B; color:#EAEAEA; }
+    .wrap { position: relative; width:100%; height:100%; overflow:hidden; }
+    video.bg {
+      position:absolute; inset:0;
+      width:100%; height:100%;
+      object-fit:cover;
+      background:#0B0B0B;
+      filter:brightness(0.8);
     }
-    html,body{height:100%;margin:0}
-    body{
-      font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
-      -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
-      color:var(--ink);
-      background:
-        radial-gradient(1100px 520px at 15% 12%, #FBE6A6 0%, transparent 60%),
-        radial-gradient(900px 460px at 85% 88%, #F7D777 0%, transparent 60%),
-        var(--bg1);
+    .overlay {
+      position:absolute; inset:0;
+      background: radial-gradient(40% 40% at 15% 20%, rgba(251,191,36,0.25), transparent 60%),
+                  radial-gradient(30% 30% at 85% 80%, rgba(251,191,36,0.18), transparent 60%);
+      pointer-events:none;
     }
-
-    .wrap{min-height:100%;position:relative;display:flex;align-items:center;justify-content:center;padding:24px}
-    .card{
-      background:var(--surface);
-      border:1px solid rgba(0,0,0,.06);
-      box-shadow:0 10px 30px rgba(0,0,0,.12);
-      border-radius:18px;
-      padding:clamp(18px,2.6vw,26px);
-      width:min(94%,820px);
-      text-align:center;
+    .content {
+      position:relative; z-index:2;
+      display:flex; align-items:center; justify-content:flex-end;
+      height:100%; text-align:center; padding:24px;
     }
-
-    /* Tech-clean heading */
-    h1{
-      margin:2px 0 10px;
-      line-height:1.12;
-      letter-spacing:.15px;
-      font-weight:700;
-      font-size:clamp(22px,4vw,36px);
-      color:var(--ink);
+    .card {
+      background: rgba(13,13,13,0.45);
+      border: 1px solid rgba(255,255,255,0.08);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+      border-radius: 18px;
+      padding: 22px 20px;
+      max-width: 760px;
+      margin: 0 auto;
+      width: min(92%, 760px);
+      /* push the card a bit lower */
+      margin-bottom: clamp(40px, 12vh, 160px);
     }
-    .brand{font-weight:780;letter-spacing:.2px}
-    .tag{font-weight:520;color:#222;opacity:.9}
-
-    p{margin:0 0 16px;color:var(--muted)}
-
-    /* Buttons */
-    .btn{display:inline-block;text-decoration:none;border-radius:12px;font-weight:800;transition:transform .06s ease}
-    .btn:active{transform:translateY(1px)}
-    .btn.primary{
-      display:block;background:var(--gold);color:#111;border:1px solid rgba(0,0,0,.2);
-      padding:14px 20px;width:100%;box-sizing:border-box;
+    h1 { font-size: clamp(22px, 4vw, 36px); margin: 6px 0 10px; }
+    p { color:#CECECE; margin: 0 0 14px; }
+    .btns { display:flex; gap:10px; justify-content:center; flex-wrap:wrap; margin-top:10px; }
+    .btn {
+      display:inline-block; padding:12px 18px; border-radius:999px; text-decoration:none;
+      background:#FBBF24; color:#111; font-weight:700; border:1px solid rgba(0,0,0,0.2);
     }
-    .socials{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:10px}
-    .btn.secondary{
-      background:#111;color:#EAEAEA;border:1px solid rgba(255,255,255,.25);
-      padding:10px 14px;border-radius:999px;
+    .btn.secondary { background:transparent; color:#EAEAEA; border:1px solid rgba(255,255,255,0.25); }
+    footer { position:absolute; left:0; right:0; bottom:10px; text-align:center; font-size:12px; color:#A0A0A0; }
+    .poster-wrap { position:absolute; inset:0; display:none; align-items:center; justify-content:center; background:#0B0B0B; }
+    .poster-wrap.active { display:flex; }
+    .play {
+      appearance:none; border:none; cursor:pointer;
+      background:#FBBF24; color:#111; border-radius:999px; padding:14px 20px; font-weight:800;
     }
-
-    footer{
-      position:fixed;left:0;right:0;bottom:12px;text-align:center;
-      font-size:12px;color:#444;
-    }
-
-    /* Optional: if you later want a static background image, uncomment below and set url(...) */
-    /* body{ background-image:url('hero.jpg'); background-size:cover; background-position:center; } */
   </style>
 </head>
 <body>
   <div class="wrap">
-    <div class="card" role="main" aria-labelledby="title">
-      <h1 id="title"><span class="brand">Beequora</span> — <span class="tag">Better conversations, every day</span></h1>
-      <p>Fun, meaningful conversations — sparked by gentle prompts, conversation starters, and micro-coaching for friends, family, and teams.</p>
+    <video class="bg" id="bgVideo" autoplay muted playsinline loop preload="metadata" poster="">
+      <source src="beequora-reklam.mp4" type="video/mp4" />
+      <!-- Optional WebM:
+      <source src="beequora-reklam.webm" type="video/webm" />
+      -->
+    </video>
+    <div class="overlay" aria-hidden="true"></div>
 
-      <!-- Primary CTA (full width) -->
-      <div style="margin-top:14px;margin-bottom:8px">
-        <a class="btn primary" href="#" title="Coming soon">Get the app</a>
-      </div>
-
-      <!-- Social row -->
-      <div class="socials">
-        <a class="btn secondary" href="https://www.instagram.com/beequora" target="_blank" rel="noopener" aria-label="Instagram">Instagram</a>
-        <a class="btn secondary" href="https://www.tiktok.com/@beequora" target="_blank" rel="noopener" aria-label="TikTok">TikTok</a>
+    <div class="content" role="main" aria-labelledby="title">
+      <div class="card">
+        <h1 id="title">Beequora — Better conversations, every day</h1>
+        <p>Conversation starters, gentle prompts, and micro-coaching to spark meaningful talk with friends, family, and teams.</p>
+        <div class="btns">
+          <a class="btn" href="#" title="Coming soon">Get the app</a>
+          <a class="btn secondary" href="https://www.instagram.com/beequora" target="_blank" rel="noopener" aria-label="Instagram">Instagram</a>
+          <a class="btn secondary" href="https://www.tiktok.com/@beequora" target="_blank" rel="noopener" aria-label="TikTok">TikTok</a>
+        </div>
       </div>
     </div>
+
+    <div id="posterWrap" class="poster-wrap" aria-hidden="true">
+      <button id="playBtn" class="play">Play video</button>
+    </div>
+
+    <footer>© <span id="year"></span> Beequora</footer>
   </div>
 
-  <footer>© Beequora 2025</footer>
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Simple autoplay fallback: if autoplay fails, show a play button
+    const v = document.getElementById('bgVideo');
+    const posterWrap = document.getElementById('posterWrap');
+    const playBtn = document.getElementById('playBtn');
+
+    function showFallback() { posterWrap.classList.add('active'); }
+    function tryPlay() {
+      if (!v) return;
+      const p = v.play();
+      if (p && typeof p.catch === 'function') { p.catch(() => showFallback()); }
+    }
+    if (document.readyState === 'complete' || document.readyState === 'interactive') {
+      tryPlay();
+    } else {
+      document.addEventListener('DOMContentLoaded', tryPlay);
+    }
+    playBtn?.addEventListener('click', () => {
+      v.muted = false;
+      v.play().then(() => posterWrap.classList.remove('active')).catch(() => {});
+    });
+  </script>
 </body>
 </html>
