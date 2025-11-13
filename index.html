@@ -8,64 +8,68 @@
   <meta name="robots" content="index,follow">
   <style>
     :root{
+      --bg:#0B0B0B;
+      --card:rgba(13,13,13,0.58);
+      --line:rgba(255,255,255,0.08);
       --gold:#FBBF24;
-      --ink:#0E0E0E;
-      --muted:#333;
-      --card:#FFFFFFE6;
+      --text:#EAEAEA;
+      --sub:#D0D0D0;
     }
     html,body{height:100%;margin:0}
     body{
-      font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
-      -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
-      color:var(--ink);
-      /* Soft, bright background (never black) */
-      background:
-        radial-gradient(1100px 520px at 15% 12%, #FBE6A6 0%, transparent 60%),
-        radial-gradient(900px 460px at 85% 88%, #F7D777 0%, transparent 60%),
-        #F4F4F5;
+      background: var(--bg);
+      color: var(--text);
+      font-family: system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+      -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;
     }
 
-    /* Floating bee logo */
-    .bee{
-      position:fixed; left:50%; transform:translateX(-50%);
-      top: clamp(18px, 6vh, 80px);
-      width: clamp(72px, 10vw, 120px); height:auto;
-      animation: float 4.8s ease-in-out infinite;
-      filter: drop-shadow(0 6px 14px rgba(0,0,0,.18));
-      z-index: 2;
+    /* Subtil tech-clean overlay glow (inte gulvit bakgrund) */
+    .overlay{
+      position:fixed; inset:0; pointer-events:none; z-index:0;
+      background:
+        radial-gradient(40% 40% at 15% 20%, rgba(251,191,36,0.18), transparent 60%),
+        radial-gradient(30% 30% at 85% 80%, rgba(251,191,36,0.10), transparent 60%);
     }
-    @keyframes float{
+
+    /* Endast Biet flyter */
+    #bee{
+      position:fixed; left:50%; transform:translateX(-50%);
+      top: clamp(20px, 6vh, 80px);
+      width: clamp(72px, 10vw, 120px); height:auto;
+      z-index:2;
+      animation: bee-float 4.8s ease-in-out infinite;
+      filter: drop-shadow(0 6px 14px rgba(0,0,0,.35));
+    }
+    @keyframes bee-float{
       0%   { transform: translate(-50%, 0) }
       50%  { transform: translate(-50%, -14px) }
       100% { transform: translate(-50%, 0) }
     }
-    @media (prefers-reduced-motion: reduce){
-      .bee{ animation:none }
-    }
+    @media (prefers-reduced-motion: reduce){ #bee{ animation:none } }
 
-    /* Content */
-    .wrap{min-height:100%; display:flex; align-items:center; justify-content:center; padding:24px}
+    .wrap{min-height:100dvh; display:flex; align-items:center; justify-content:center; padding:24px; position:relative; z-index:1;}
     .card{
       background: var(--card);
-      border: 1px solid rgba(0,0,0,.06);
-      box-shadow: 0 10px 30px rgba(0,0,0,.12);
-      border-radius: 18px;
+      border:1px solid var(--line);
+      backdrop-filter: blur(2px);
+      box-shadow: 0 10px 30px rgba(0,0,0,.30);
+      border-radius:18px;
       padding: clamp(18px, 2.6vw, 26px);
       width: min(94%, 820px);
       text-align:center;
-      margin-top: clamp(80px, 18vh, 160px); /* leave space for the bee */
+      margin-top: clamp(80px, 18vh, 160px); /* plats för biet ovanför */
     }
 
     /* Tech-clean heading */
     h1{
-      margin: 6px 0 10px; line-height:1.12; letter-spacing:.15px;
-      font-weight:700; font-size:clamp(22px, 4vw, 36px); color:var(--ink);
+      margin:6px 0 10px; line-height:1.12; letter-spacing:.15px;
+      font-weight:700; font-size:clamp(22px,4vw,36px);
     }
     .brand{ font-weight:780; letter-spacing:.2px }
-    .tag  { font-weight:520; color:#222; opacity:.9 }
+    .tag{ font-weight:520; color:var(--sub); }
 
-    p{ color:var(--muted); margin: 0 0 12px }
-    .meta{ color:#666; font-size:13px; margin-bottom: 8px }
+    p{ color:#D9D9D9; margin:0 0 12px }
+    .meta{ color:#BDBDBD; font-size:13px; margin-bottom:8px }
 
     /* Buttons */
     .btn{ display:inline-block; text-decoration:none; border-radius:12px; font-weight:800; transition:transform .06s ease }
@@ -76,19 +80,21 @@
     }
     .socials{ display:flex; gap:10px; justify-content:center; flex-wrap:wrap; margin-top:10px }
     .btn.secondary{
-      background:#111; color:#EAEAEA; border:1px solid rgba(255,255,255,.25);
+      background:transparent; color:var(--text); border:1px solid var(--line);
       padding:10px 14px; border-radius:999px;
     }
 
     footer{
       position:fixed; left:0; right:0; bottom:12px; text-align:center;
-      font-size:12px; color:#444;
+      font-size:12px; color:#A8A8A8; z-index:1;
     }
   </style>
 </head>
 <body>
-  <!-- Floating bee -->
-  <img src="bee-logo.png" alt="Beequora bee logo" class="bee" />
+  <div class="overlay" aria-hidden="true"></div>
+
+  <!-- Endast biet, ingen video -->
+  <img id="bee" src="bee-logo.png" alt="Beequora bee logo" />
 
   <div class="wrap">
     <div class="card" role="main" aria-labelledby="title">
@@ -96,10 +102,8 @@
       <p>Fun, meaningful conversations — sparked by gentle prompts, conversation starters, and micro-coaching for friends, family, and teams.</p>
       <p class="meta">Updated <span id="updated"></span></p>
 
-      <!-- Primary CTA -->
       <a class="btn primary" href="#" title="Coming soon">Get the app</a>
 
-      <!-- Socials -->
       <div class="socials">
         <a class="btn secondary" href="https://www.instagram.com/beequora" target="_blank" rel="noopener">Instagram</a>
         <a class="btn secondary" href="https://www.tiktok.com/@beequora" target="_blank" rel="noopener">TikTok</a>
@@ -110,7 +114,7 @@
   <footer>© Beequora 2025</footer>
 
   <script>
-    // Date stamp (e.g., 13 Nov 2025)
+    // Datumstämpel (t.ex. 13 Nov 2025)
     const el = document.getElementById('updated');
     try {
       const d = new Date();
