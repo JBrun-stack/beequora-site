@@ -16,15 +16,16 @@
       --sub:#BDBDBD;
 
       /* Bee tuning */
-      --bee-width-min: 216px;
-      --bee-width-vw:  30vw;
-      --bee-width-max: 360px;
-      --bee-bottom-gap: 6px;     /* lite tajtare under biet */
+      --bee-width-min: 200px;
+      --bee-width-vw:  28vw;
+      --bee-width-max: 320px;
+      --bee-bottom-gap: 6px;
       --bee-clip-bottom: 32%;
-      --bee-float-amp: 14px;
-      --bee-float-sec: 5.2s;
+      --bee-float-amp: 12px;
+      --bee-float-sec: 5s;
     }
-    html,body{height:100%;margin:0}
+
+    html,body{height:100%;margin:0; overflow:hidden;} /* ingen scroll */
     body{
       background:var(--bg);
       color:var(--text);
@@ -33,24 +34,25 @@
     }
 
     .wrap{
-      min-height:100dvh; display:flex; align-items:center; justify-content:center;
-      padding:24px; padding-bottom:60px; /* lite mindre för att flytta upp allt */
+      height:100dvh; display:flex; align-items:center; justify-content:center;
+      padding:16px; padding-bottom:48px; /* plats för footer */
       position:relative; z-index:1; flex-direction:column;
+      box-sizing:border-box;
     }
 
     /* --- Bee (only this animates) --- */
     .bee-wrap{
       position:relative; display:flex; justify-content:center;
-      margin-top: clamp(24px, 6vh, 96px); /* flyttat upp */
-      margin-bottom: var(--bee-bottom-gap);
+      margin-top: clamp(8px, 4vh, 48px);     /* högre upp */
+      margin-bottom: var(--bee-bottom-gap);  /* tajt mot kortet */
       overflow:hidden;
-      clip-path: inset(0 0 var(--bee-clip-bottom) 0 round 0); /* göm ev. logotext under biet */
+      clip-path: inset(0 0 var(--bee-clip-bottom) 0 round 0); /* döljer ev. logotext under biet */
     }
     #bee{
       width: clamp(var(--bee-width-min), var(--bee-width-vw), var(--bee-width-max));
       height:auto;
       animation: beeFloat var(--bee-float-sec) ease-in-out infinite;
-      filter: drop-shadow(0 10px 22px rgba(0,0,0,.55));
+      filter: drop-shadow(0 8px 18px rgba(0,0,0,.55));
       transform: translateZ(0);
     }
     @keyframes beeFloat{
@@ -65,46 +67,53 @@
       background:var(--card);
       border:1px solid var(--line);
       backdrop-filter: blur(2px);
-      box-shadow: 0 12px 34px rgba(0,0,0,.45);
-      border-radius:18px;
-      padding: clamp(18px, 2.6vw, 26px);
-      width: min(94%, 820px);
+      box-shadow: 0 10px 28px rgba(0,0,0,.45);
+      border-radius:16px;
+      padding: 14px 16px;                 /* tajtare padding */
+      width: min(92%, 760px);
       text-align:center;
-      margin-top: 0;
+      margin-top:0;
+      box-sizing:border-box;
     }
 
     /* Tech-clean text */
     .brand-title{
-      margin:4px 0 6px;
-      line-height:1.08;
+      margin:2px 0 4px;
+      line-height:1.06;
       letter-spacing:.2px;
       font-weight:800;
-      font-size: clamp(26px, 5vw, 38px);
+      font-size: clamp(24px, 4.6vw, 34px);
     }
     .copilot{
-      margin:0 0 8px;
+      margin:0 0 6px;
       color:#D9D9D9;
       font-weight:600;
       letter-spacing:.2px;
+      font-size: clamp(14px, 2vw, 16px);
     }
     .tagline{
-      font-size: clamp(13px, 1.6vw, 14px);
-      letter-spacing: .4px;
+      font-size: clamp(12px, 1.5vw, 13px);
+      letter-spacing: .35px;
       color: var(--sub);
-      margin: 2px 0 10px;
+      margin: 2px 0 8px;
     }
     .subhead{
       color:#D9D9D9;
-      margin: 0 0 8px;
+      margin: 0 0 6px;
+      line-height:1.28;
+      font-size: clamp(13px, 1.9vw, 15px);
     }
     .oneliner{
       color:#CFCFCF;
-      margin: 0 0 12px;
+      margin: 0 0 8px;
+      line-height:1.24;
+      font-size: clamp(12px, 1.8vw, 14px);
     }
     .features{
       color:#BEBEBE;
-      margin: 0 0 14px;
-      font-size: 14px;
+      margin: 0 0 10px;
+      font-size: clamp(12px, 1.7vw, 14px);
+      line-height:1.24;
     }
 
     /* Buttons */
@@ -112,21 +121,50 @@
     .btn:active{ transform: translateY(1px) }
     .btn.primary{
       display:block; background:var(--gold); color:#111; border:1px solid rgba(0,0,0,.2);
-      padding:14px 20px; width:100%; box-sizing:border-box; margin-top:10px; margin-bottom:8px;
+      padding:12px 16px; width:100%; box-sizing:border-box; margin-top:8px; margin-bottom:6px;
+      font-size:14px;
     }
-    .socials{ display:flex; gap:10px; justify-content:center; flex-wrap:wrap; margin-top:8px }
+    .socials{ display:flex; gap:8px; justify-content:center; flex-wrap:wrap; margin-top:6px }
     .btn.secondary{
       background:transparent; color:var(--text); border:1px solid var(--line);
-      padding:10px 14px; border-radius:999px;
+      padding:8px 12px; border-radius:999px; font-size:13px;
     }
 
     .meta{
-      color:#A8A8A8; font-size:13px; margin-top:10px;
+      color:#A8A8A8; font-size:12px; margin-top:8px;
     }
 
     footer{
-      position:fixed; left:0; right:0; bottom:12px; text-align:center;
+      position:fixed; left:0; right:0; bottom:8px; text-align:center;
       font-size:12px; color:#8C8C8C; z-index:1;
+    }
+
+    /* ===== Short screen handling (no overlap, no scroll) ===== */
+    @media (max-height: 760px){
+      .wrap{ padding-bottom:40px; }
+      .features{ font-size:12px; }
+    }
+    @media (max-height: 680px){
+      /* göm one-liner först för att spara plats */
+      .oneliner{ display:none; }
+      .subhead{ margin-bottom:6px; }
+      .features{ margin-bottom:8px; }
+      .btn.primary{ margin-top:6px; }
+    }
+    @media (max-height: 620px){
+      /* om det fortfarande är trångt – gör allt lite mindre */
+      .brand-title{ font-size: clamp(22px, 4vw, 30px); }
+      .copilot{ font-size:12.5px; }
+      .tagline{ font-size:12px; }
+      .subhead{ font-size:12.5px; }
+      .features{ font-size:11.5px; }
+      #bee{ --bee-width-max: 300px; }
+      .bee-wrap{ margin-top: clamp(6px, 3vh, 36px); }
+    }
+    @media (max-height: 560px){
+      /* sista säkerhet: göm features-raden helt för att undvika krockar */
+      .features{ display:none; }
+      .meta{ margin-top:6px; }
     }
   </style>
 </head>
@@ -137,7 +175,6 @@
     </div>
 
     <div class="card" role="main" aria-labelledby="title">
-      <!-- Beequora överst, sedan copilot på egen rad, sedan tagline -->
       <h1 id="title" class="brand-title">Beequora</h1>
       <p class="copilot">your conversation copilot</p>
       <p class="tagline">Tiny prompts. Big talk.</p>
