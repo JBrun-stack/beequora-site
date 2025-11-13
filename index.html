@@ -4,25 +4,25 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Beequora — Better conversations, every day</title>
-  <meta name="description" content="Fun, meaningful conversations — sparked by gentle prompts, conversation starters, and micro-coaching for friends, family, and teams.">
+  <meta name="description" content="Put fun in conversations and spark meaningful talk with gentle prompts, conversation starters, and micro-coaching for friends, family, and teams.">
   <meta name="robots" content="index,follow">
   <style>
     :root{
-      --bg:#000000;           /* ren svart bakgrund */
+      --bg:#000000;
       --card:rgba(13,13,13,.60);
       --line:rgba(255,255,255,.08);
       --gold:#FBBF24;
       --text:#EAEAEA;
       --sub:#BDBDBD;
 
-      /* Justerbara parametrar för biet */
-      --bee-width-min: 216px;   /* 3× tidigare ~72px */
-      --bee-width-vw:  30vw;    /* skala på större skärmar */
-      --bee-width-max: 360px;   /* max-storlek */
-      --bee-bottom-gap: 18px;   /* glapp mellan bi och kort */
-      --bee-clip-bottom: 32%;   /* BESKÄR nederdelen för att dölja logotext (öka/minska vid behov) */
-      --bee-float-amp: 14px;    /* hur högt biet “andar” uppåt */
-      --bee-float-sec: 5.2s;    /* hur långsam flyt-animationen är */
+      /* Bee tuning */
+      --bee-width-min: 216px;
+      --bee-width-vw:  30vw;
+      --bee-width-max: 360px;
+      --bee-bottom-gap: 18px;
+      --bee-clip-bottom: 32%;
+      --bee-float-amp: 14px;
+      --bee-float-sec: 5.2s;
     }
     html,body{height:100%;margin:0}
     body{
@@ -32,40 +32,32 @@
       -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
     }
 
-    /* Diskret vignette (mycket svag). Ta bort helt genom att display:none om du vill */
     .vignette{
       position:fixed; inset:0; pointer-events:none; z-index:0;
-      background:
-        radial-gradient(60% 40% at 50% 20%, rgba(251,191,36,.05), transparent 60%);
+      background: radial-gradient(60% 40% at 50% 20%, rgba(251,191,36,.05), transparent 60%);
     }
 
     .wrap{
       min-height:100dvh; display:flex; align-items:center; justify-content:center;
-      padding:24px; position:relative; z-index:1;
-      flex-direction:column;
+      padding:24px; padding-bottom:72px;  /* lämna plats för footern */
+      position:relative; z-index:1; flex-direction:column;
     }
 
-    /* --- BIET --- */
+    /* --- Bee --- */
     .bee-wrap{
-      position:relative;
-      display:flex; justify-content:center;
-      /* Placera biet strax ovanför kortet */
-      margin-top: clamp(120px, 18vh, 200px);
+      position:relative; display:flex; justify-content:center;
+      /* flytta upp lite så footern syns */
+      margin-top: clamp(80px, 14vh, 160px);
       margin-bottom: var(--bee-bottom-gap);
-      /* Beskär nederdelen (där ev. text sitter) så den inte syns */
       overflow:hidden;
-      /* Val 1: clip-path (moderna browsers) */
       clip-path: inset(0 0 var(--bee-clip-bottom) 0 round 0);
-      /* Val 2 (fallback): fast höjd – används om du vill fintrimma manuellt
-         height: 260px;
-      */
     }
     #bee{
       width: clamp(var(--bee-width-min), var(--bee-width-vw), var(--bee-width-max));
-      height: auto;
+      height:auto;
       animation: beeFloat var(--bee-float-sec) ease-in-out infinite;
       filter: drop-shadow(0 10px 22px rgba(0,0,0,.55));
-      transform: translateZ(0); /* bättre rendering */
+      transform: translateZ(0);
     }
     @keyframes beeFloat{
       0%   { transform: translateY(0) }
@@ -74,7 +66,7 @@
     }
     @media (prefers-reduced-motion: reduce){ #bee{ animation:none } }
 
-    /* --- KORTET --- */
+    /* --- Card --- */
     .card{
       background:var(--card);
       border:1px solid var(--line);
@@ -84,22 +76,21 @@
       padding: clamp(18px, 2.6vw, 26px);
       width: min(94%, 820px);
       text-align:center;
-      /* mindre toppmarginal nu när bee-wrap styr avståndet */
       margin-top: 0;
     }
 
-    /* Rubrik + text */
+    /* Heading + text */
     h1{
       margin:6px 0 10px; line-height:1.12; letter-spacing:.15px;
       font-weight:700; font-size:clamp(22px, 4vw, 36px);
     }
     .brand{ font-weight:780; letter-spacing:.2px }
-    .tag{ font-weight:520; color:var(--sub) }
+    .tag  { font-weight:520; color:var(--sub) }
 
     p{ margin:0 0 12px; color:#D9D9D9 }
     .meta{ color:#A8A8A8; font-size:13px; margin-bottom:8px }
 
-    /* Knappar */
+    /* Buttons */
     .btn{ display:inline-block; text-decoration:none; border-radius:12px; font-weight:800; transition:transform .06s ease }
     .btn:active{ transform: translateY(1px) }
     .btn.primary{
@@ -122,15 +113,16 @@
   <div class="vignette" aria-hidden="true"></div>
 
   <div class="wrap">
-    <!-- STORT BI, beskuret nederst så ev. logotext inte syns -->
     <div class="bee-wrap">
       <img id="bee" src="bee-logo.png" alt="Beequora bee logo" />
     </div>
 
     <div class="card" role="main" aria-labelledby="title">
       <h1 id="title"><span class="brand">Beequora</span> — <span class="tag">Better conversations, every day</span></h1>
-      <p>Fun, meaningful conversations — sparked by gentle prompts, conversation starters, and micro-coaching for friends, family, and teams.</p>
-      <p class="meta">Updated <span id="updated"></span></p>
+
+      <!-- Ny copy: "Put fun in conversations ..." + datum i löpande mening -->
+      <p>Put fun in conversations and spark meaningful, real talk with gentle prompts, conversation starters, and micro-coaching for friends, family, and teams.</p>
+      <p class="meta">Keeping conversations fun & meaningful — updated <span id="updated"></span>.</p>
 
       <a class="btn primary" href="#" title="Coming soon">Get the app</a>
 
@@ -144,12 +136,12 @@
   <footer>© Beequora 2025</footer>
 
   <script>
-    // Datumstämpel (t.ex. 13 Nov 2025)
+    // Date in sentence, e.g., "updated 13 Nov 2025."
     const el = document.getElementById('updated');
     try {
       const d = new Date();
       el.textContent = d.toLocaleDateString('en-GB', { day:'2-digit', month:'short', year:'numeric' });
-    } catch { el.textContent = 'Nov 13, 2025'; }
+    } catch { el.textContent = '13 Nov 2025'; }
   </script>
 </body>
 </html>
