@@ -14,6 +14,15 @@
       --gold:#FBBF24;
       --text:#EAEAEA;
       --sub:#BDBDBD;
+
+      /* Justerbara parametrar för biet */
+      --bee-width-min: 216px;   /* 3× tidigare ~72px */
+      --bee-width-vw:  30vw;    /* skala på större skärmar */
+      --bee-width-max: 360px;   /* max-storlek */
+      --bee-bottom-gap: 18px;   /* glapp mellan bi och kort */
+      --bee-clip-bottom: 32%;   /* BESKÄR nederdelen för att dölja logotext (öka/minska vid behov) */
+      --bee-float-amp: 14px;    /* hur högt biet “andar” uppåt */
+      --bee-float-sec: 5.2s;    /* hur långsam flyt-animationen är */
     }
     html,body{height:100%;margin:0}
     body{
@@ -23,31 +32,49 @@
       -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
     }
 
-    /* Liten, diskret vignette (mycket svag) */
+    /* Diskret vignette (mycket svag). Ta bort helt genom att display:none om du vill */
     .vignette{
       position:fixed; inset:0; pointer-events:none; z-index:0;
       background:
-        radial-gradient(60% 40% at 50% 20%, rgba(251,191,36,.06), transparent 60%);
+        radial-gradient(60% 40% at 50% 20%, rgba(251,191,36,.05), transparent 60%);
     }
 
-    /* ENDAST biet animeras */
+    .wrap{
+      min-height:100dvh; display:flex; align-items:center; justify-content:center;
+      padding:24px; position:relative; z-index:1;
+      flex-direction:column;
+    }
+
+    /* --- BIET --- */
+    .bee-wrap{
+      position:relative;
+      display:flex; justify-content:center;
+      /* Placera biet strax ovanför kortet */
+      margin-top: clamp(120px, 18vh, 200px);
+      margin-bottom: var(--bee-bottom-gap);
+      /* Beskär nederdelen (där ev. text sitter) så den inte syns */
+      overflow:hidden;
+      /* Val 1: clip-path (moderna browsers) */
+      clip-path: inset(0 0 var(--bee-clip-bottom) 0 round 0);
+      /* Val 2 (fallback): fast höjd – används om du vill fintrimma manuellt
+         height: 260px;
+      */
+    }
     #bee{
-      position:fixed; left:50%; transform:translateX(-50%);
-      top: clamp(24px, 7vh, 96px);
-      width: clamp(72px, 10vw, 120px); height:auto;
-      z-index:2;
-      animation: beeFloat 5.2s ease-in-out infinite;
-      /* mjuk skugga runt biet för separering */
-      filter: drop-shadow(0 8px 18px rgba(0,0,0,.55));
+      width: clamp(var(--bee-width-min), var(--bee-width-vw), var(--bee-width-max));
+      height: auto;
+      animation: beeFloat var(--bee-float-sec) ease-in-out infinite;
+      filter: drop-shadow(0 10px 22px rgba(0,0,0,.55));
+      transform: translateZ(0); /* bättre rendering */
     }
     @keyframes beeFloat{
-      0%   { transform: translate(-50%, 0) }
-      50%  { transform: translate(-50%, -14px) }
-      100% { transform: translate(-50%, 0) }
+      0%   { transform: translateY(0) }
+      50%  { transform: translateY(calc(-1 * var(--bee-float-amp))) }
+      100% { transform: translateY(0) }
     }
     @media (prefers-reduced-motion: reduce){ #bee{ animation:none } }
 
-    .wrap{min-height:100dvh; display:flex; align-items:center; justify-content:center; padding:24px; position:relative; z-index:1;}
+    /* --- KORTET --- */
     .card{
       background:var(--card);
       border:1px solid var(--line);
@@ -57,10 +84,11 @@
       padding: clamp(18px, 2.6vw, 26px);
       width: min(94%, 820px);
       text-align:center;
-      margin-top: clamp(80px, 20vh, 180px); /* plats för biet ovanför */
+      /* mindre toppmarginal nu när bee-wrap styr avståndet */
+      margin-top: 0;
     }
 
-    /* Tech-clean heading */
+    /* Rubrik + text */
     h1{
       margin:6px 0 10px; line-height:1.12; letter-spacing:.15px;
       font-weight:700; font-size:clamp(22px, 4vw, 36px);
@@ -71,7 +99,7 @@
     p{ margin:0 0 12px; color:#D9D9D9 }
     .meta{ color:#A8A8A8; font-size:13px; margin-bottom:8px }
 
-    /* Buttons */
+    /* Knappar */
     .btn{ display:inline-block; text-decoration:none; border-radius:12px; font-weight:800; transition:transform .06s ease }
     .btn:active{ transform: translateY(1px) }
     .btn.primary{
@@ -93,10 +121,12 @@
 <body>
   <div class="vignette" aria-hidden="true"></div>
 
-  <!-- Biet (PNG med svart bakgrund smälter in i #000) -->
-  <img id="bee" src="bee-logo.png" alt="Beequora bee logo" />
-
   <div class="wrap">
+    <!-- STORT BI, beskuret nederst så ev. logotext inte syns -->
+    <div class="bee-wrap">
+      <img id="bee" src="bee-logo.png" alt="Beequora bee logo" />
+    </div>
+
     <div class="card" role="main" aria-labelledby="title">
       <h1 id="title"><span class="brand">Beequora</span> — <span class="tag">Better conversations, every day</span></h1>
       <p>Fun, meaningful conversations — sparked by gentle prompts, conversation starters, and micro-coaching for friends, family, and teams.</p>
@@ -114,7 +144,7 @@
   <footer>© Beequora 2025</footer>
 
   <script>
-    // Datum (t.ex. 13 Nov 2025)
+    // Datumstämpel (t.ex. 13 Nov 2025)
     const el = document.getElementById('updated');
     try {
       const d = new Date();
@@ -123,4 +153,3 @@
   </script>
 </body>
 </html>
-
