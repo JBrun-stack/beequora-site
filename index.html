@@ -10,90 +10,66 @@
     :root{
       --gold:#FBBF24;
       --ink:#0E0E0E;
+      --muted:#333;
+      --card:#FFFFFFE6;
     }
     html,body{height:100%;margin:0}
     body{
       font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
       -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
-      color:#111;
-      /* Always-visible light fallback so it never goes black */
+      color:var(--ink);
+      /* Soft, bright background (never black) */
       background:
         radial-gradient(1100px 520px at 15% 12%, #FBE6A6 0%, transparent 60%),
         radial-gradient(900px 460px at 85% 88%, #F7D777 0%, transparent 60%),
         #F4F4F5;
     }
 
-    .wrap{ position:relative; min-height:100vh; overflow:hidden; }
-
-    /* Background video: hidden until we confirm it is actually playing */
-    video.bg{
-      position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
-      display:none; background:#000;
-    }
-    body.has-video video.bg{ display:block; filter:brightness(0.82); }
-
-    /* Soft overlay only when video is active */
-    .overlay{ display:none; position:absolute; inset:0; pointer-events:none; z-index:1;
-      background: linear-gradient(to top, rgba(10,10,10,.38), rgba(10,10,10,.10) 40%, transparent 65%);
-    }
-    body.has-video .overlay{ display:block; }
-
-    /* Floating bee */
+    /* Floating bee logo */
     .bee{
-      position:fixed; z-index:3; left:50%; transform:translateX(-50%);
-      top: clamp(24px, 6vh, 80px);
-      width: clamp(64px, 10vw, 110px); height:auto;
-      animation: float 4.2s ease-in-out infinite;
-      filter: drop-shadow(0 6px 14px rgba(0,0,0,.25));
+      position:fixed; left:50%; transform:translateX(-50%);
+      top: clamp(18px, 6vh, 80px);
+      width: clamp(72px, 10vw, 120px); height:auto;
+      animation: float 4.8s ease-in-out infinite;
+      filter: drop-shadow(0 6px 14px rgba(0,0,0,.18));
+      z-index: 2;
     }
     @keyframes float{
       0%   { transform: translate(-50%, 0) }
-      50%  { transform: translate(-50%, -12px) }
+      50%  { transform: translate(-50%, -14px) }
       100% { transform: translate(-50%, 0) }
     }
     @media (prefers-reduced-motion: reduce){
       .bee{ animation:none }
     }
 
-    /* Content block */
-    .content{
-      position:relative; z-index:2;
-      min-height:100vh; display:flex; align-items:center; justify-content:center;
-      text-align:center; padding:24px;
-    }
+    /* Content */
+    .wrap{min-height:100%; display:flex; align-items:center; justify-content:center; padding:24px}
     .card{
-      background:#FFFFFFE6; /* light card by default */
-      backdrop-filter: blur(2px);
-      border:1px solid rgba(0,0,0,.06);
-      box-shadow:0 10px 30px rgba(0,0,0,.15);
-      border-radius:18px;
-      padding:clamp(18px,2.6vw,26px);
-      width:min(94%,820px);
-    }
-    body.has-video .card{
-      background: rgba(13,13,13,.58);
-      border:1px solid rgba(255,255,255,.08);
-      color:#EAEAEA;
+      background: var(--card);
+      border: 1px solid rgba(0,0,0,.06);
+      box-shadow: 0 10px 30px rgba(0,0,0,.12);
+      border-radius: 18px;
+      padding: clamp(18px, 2.6vw, 26px);
+      width: min(94%, 820px);
+      text-align:center;
+      margin-top: clamp(80px, 18vh, 160px); /* leave space for the bee */
     }
 
     /* Tech-clean heading */
     h1{
-      margin:6px 0 10px; line-height:1.12; letter-spacing:.15px;
-      font-weight:700; font-size:clamp(22px,4vw,36px);
-      color:#0E0E0E;
+      margin: 6px 0 10px; line-height:1.12; letter-spacing:.15px;
+      font-weight:700; font-size:clamp(22px, 4vw, 36px); color:var(--ink);
     }
-    body.has-video h1{ color:#EAEAEA }
     .brand{ font-weight:780; letter-spacing:.2px }
-    .tag{ font-weight:520; opacity:.95 }
+    .tag  { font-weight:520; color:#222; opacity:.9 }
 
-    p{ margin:0 0 12px; color:#333 }
-    body.has-video p{ color:#DADADA }
-    .meta{ color:#666; font-size:13px }
-    body.has-video .meta{ color:#BDBDBD }
+    p{ color:var(--muted); margin: 0 0 12px }
+    .meta{ color:#666; font-size:13px; margin-bottom: 8px }
 
     /* Buttons */
     .btn{ display:inline-block; text-decoration:none; border-radius:12px; font-weight:800; transition:transform .06s ease }
-    .btn:active{ transform:translateY(1px) }
+    .btn:active{ transform: translateY(1px) }
     .btn.primary{
       display:block; background:var(--gold); color:#111; border:1px solid rgba(0,0,0,.2);
       padding:14px 20px; width:100%; box-sizing:border-box; margin-top:14px; margin-bottom:8px;
@@ -103,70 +79,45 @@
       background:#111; color:#EAEAEA; border:1px solid rgba(255,255,255,.25);
       padding:10px 14px; border-radius:999px;
     }
-    body.has-video .btn.secondary{ background:rgba(255,255,255,.08) }
 
     footer{
       position:fixed; left:0; right:0; bottom:12px; text-align:center;
-      font-size:12px; color:#444; z-index:2;
+      font-size:12px; color:#444;
     }
-    body.has-video footer{ color:#EAEAEA; text-shadow:0 1px 2px rgba(0,0,0,.7) }
   </style>
 </head>
 <body>
+  <!-- Floating bee -->
+  <img src="bee-logo.png" alt="Beequora bee logo" class="bee" />
+
   <div class="wrap">
-    <!-- floating bee logo -->
-    <img src="bee-logo.png" alt="Beequora bee logo" class="bee" />
+    <div class="card" role="main" aria-labelledby="title">
+      <h1 id="title"><span class="brand">Beequora</span> — <span class="tag">Better conversations, every day</span></h1>
+      <p>Fun, meaningful conversations — sparked by gentle prompts, conversation starters, and micro-coaching for friends, family, and teams.</p>
+      <p class="meta">Updated <span id="updated"></span></p>
 
-    <!-- background video -->
-    <video class="bg" id="bgVideo" autoplay muted playsinline loop preload="metadata" poster="">
-      <source src="beequora-reklam.mp4" type="video/mp4" />
-    </video>
-    <div class="overlay" aria-hidden="true"></div>
+      <!-- Primary CTA -->
+      <a class="btn primary" href="#" title="Coming soon">Get the app</a>
 
-    <!-- content -->
-    <div class="content" role="main" aria-labelledby="title">
-      <div class="card">
-        <h1 id="title"><span class="brand">Beequora</span> — <span class="tag">Better conversations, every day</span></h1>
-        <p>Fun, meaningful conversations — sparked by gentle prompts, conversation starters, and micro-coaching for friends, family, and teams.</p>
-        <p class="meta">Updated <span id="updated"></span></p>
-
-        <a class="btn primary" href="#" title="Coming soon">Get the app</a>
-
-        <div class="socials">
-          <a class="btn secondary" href="https://www.instagram.com/beequora" target="_blank" rel="noopener" aria-label="Instagram">Instagram</a>
-          <a class="btn secondary" href="https://www.tiktok.com/@beequora" target="_blank" rel="noopener" aria-label="TikTok">TikTok</a>
-        </div>
+      <!-- Socials -->
+      <div class="socials">
+        <a class="btn secondary" href="https://www.instagram.com/beequora" target="_blank" rel="noopener">Instagram</a>
+        <a class="btn secondary" href="https://www.tiktok.com/@beequora" target="_blank" rel="noopener">TikTok</a>
       </div>
     </div>
-
-    <footer>© Beequora 2025</footer>
   </div>
 
+  <footer>© Beequora 2025</footer>
+
   <script>
-    // Date stamp
-    const dateEl = document.getElementById('updated');
+    // Date stamp (e.g., 13 Nov 2025)
+    const el = document.getElementById('updated');
     try {
       const d = new Date();
-      dateEl.textContent = d.toLocaleDateString('en-GB', { day:'2-digit', month:'short', year:'numeric' });
-    } catch(_) { dateEl.textContent = 'Nov 13, 2025'; }
-
-    // Enable video ONLY if it is truly playing (prevents black screens)
-    const v = document.getElementById('bgVideo');
-    function isPlaying(video){
-      return video && video.readyState >= 2 && !video.paused && !video.ended && video.currentTime > 0;
+      el.textContent = d.toLocaleDateString('en-GB', { day:'2-digit', month:'short', year:'numeric' });
+    } catch(_) {
+      el.textContent = 'Nov 13, 2025';
     }
-    function tryEnableVideo(){
-      if(!v) return;
-      const p = v.play?.();
-      if(p && typeof p.catch === 'function'){ p.catch(()=>{}); }
-      // Confirm soon after
-      setTimeout(()=>{ if(isPlaying(v)){ document.body.classList.add('has-video'); } }, 700);
-      // Also toggle when we receive time updates
-      const onTick = ()=>{ if(isPlaying(v)){ document.body.classList.add('has-video'); v.removeEventListener('timeupdate', onTick); } };
-      v.addEventListener('timeupdate', onTick);
-    }
-    if(document.readyState === 'complete' || document.readyState === 'interactive'){ tryEnableVideo(); }
-    else { document.addEventListener('DOMContentLoaded', tryEnableVideo); }
   </script>
 </body>
 </html>
