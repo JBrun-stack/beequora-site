@@ -10,24 +10,28 @@
     html, body { height: 100%; margin: 0; }
     body {
       font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
-      background:#0B0B0B; color:#EAEAEA;
+      -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;
+      color:#111; /* fallback text color */
+      background:
+        radial-gradient(1200px 600px at 15% 15%, #FBE6A6 0%, transparent 60%),
+        radial-gradient(1000px 500px at 85% 85%, #F7D777 0%, transparent 60%),
+        #0B0B0B;
     }
     .wrap { position: relative; width:100%; height:100%; overflow:hidden; }
 
-    /* Fullscreen background video */
+    /* Background video (hidden if body.no-video is set) */
     video.bg {
-      position:absolute; inset:0;
-      width:100%; height:100%;
-      object-fit:cover;
-      background:#0B0B0B;
-      filter:brightness(0.82);
+      position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
+      background:#0B0B0B; filter:brightness(0.84);
     }
+    body.no-video video.bg { display:none; }  /* hide video when it fails */
 
-    /* Readability overlays */
+    /* Softer overlay so it never goes pitch black */
     .overlay {
-      position:absolute; inset:0;
-      background:
-        linear-gradient(to top, rgba(11,11,11,0.75), rgba(11,11,11,0.20) 35%, transparent 60%),
-        radial-gradient(40% 40% at 15% 20%, rgba(251,191
+      position:absolute; inset:0; pointer-events:none;
+      background: linear-gradient(to top, rgba(10,10,10,0.55), rgba(10,10,10,0.08) 40%, transparent 70%);
+    }
+    body.no-video .overlay { display:none; } /* no overlay on fallback */
+
+    /* Content block */
+    .content
