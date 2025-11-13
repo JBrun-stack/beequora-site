@@ -3,25 +3,9 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-
   <title>Beequora — your conversation copilot</title>
   <meta name="description" content="Tiny prompts. Big talk. Playful starters, live micro-coaching, and thoughtful wrap-ups for better conversations." />
   <meta name="robots" content="index,follow" />
-  <link rel="canonical" href="https://beequora.com/">
-
-  <!-- Icons / PWA basics -->
-  <link rel="icon" href="/favicon.ico">
-  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
-  <meta name="theme-color" content="#000000">
-
-  <!-- Open Graph / Twitter cards -->
-  <meta property="og:title" content="Beequora — your conversation copilot">
-  <meta property="og:description" content="Tiny prompts. Big talk.">
-  <meta property="og:image" content="https://beequora.com/og.jpg">
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="https://beequora.com/">
-  <meta name="twitter:card" content="summary_large_image">
-
   <style>
     :root{
       --bg:#000000;
@@ -31,17 +15,17 @@
       --text:#EAEAEA;
       --sub:#BDBDBD;
 
-      /* Bee tuning (närmare texten) */
+      /* Bee tuning */
       --bee-width-min: 200px;
       --bee-width-vw:  28vw;
       --bee-width-max: 320px;
-      --bee-bottom-gap: 4px;   /* tajtare */
-      --bee-clip-bottom: 28%;  /* beskär lite mindre, så biet kan komma närmare */
+      --bee-bottom-gap: 6px;
+      --bee-clip-bottom: 32%;
       --bee-float-amp: 12px;
       --bee-float-sec: 5s;
     }
 
-    html,body{height:100%;margin:0;overflow:hidden}
+    html,body{height:100%;margin:0; overflow:hidden;} /* ingen scroll */
     body{
       background:var(--bg);
       color:var(--text);
@@ -59,10 +43,10 @@
     /* --- Bee (only this animates) --- */
     .bee-wrap{
       position:relative; display:flex; justify-content:center;
-      margin-top: clamp(8px, 4vh, 40px);    /* högre upp */
-      margin-bottom: var(--bee-bottom-gap); /* nära kortet */
+      margin-top: clamp(8px, 4vh, 48px);     /* högre upp */
+      margin-bottom: var(--bee-bottom-gap);  /* tajt mot kortet */
       overflow:hidden;
-      clip-path: inset(0 0 var(--bee-clip-bottom) 0 round 0);
+      clip-path: inset(0 0 var(--bee-clip-bottom) 0 round 0); /* döljer ev. logotext under biet */
     }
     #bee{
       width: clamp(var(--bee-width-min), var(--bee-width-vw), var(--bee-width-max));
@@ -85,21 +69,26 @@
       backdrop-filter: blur(2px);
       box-shadow: 0 10px 28px rgba(0,0,0,.45);
       border-radius:16px;
-      padding: 14px 16px;
+      padding: 14px 16px;                 /* tajtare padding */
       width: min(92%, 760px);
       text-align:center;
       margin-top:0;
       box-sizing:border-box;
     }
 
-    /* Wordmark = bild (exakt samma font som i logon) */
-    .wordmark{
-      display:block; margin:0 auto 6px auto;
-      width:min(68%, 360px); height:auto;
-      image-rendering:-webkit-optimize-contrast;
+    /* Tech-clean text */
+    .brand-title{
+      margin:2px 0 4px;
+      line-height:1.06;
+      letter-spacing:.2px;
+      font-weight:800;
+      font-size: clamp(24px, 4.6vw, 34px);
     }
     .copilot{
-      margin:0 0 6px; color:#D9D9D9; font-weight:600; letter-spacing:.2px;
+      margin:0 0 6px;
+      color:#D9D9D9;
+      font-weight:600;
+      letter-spacing:.2px;
       font-size: clamp(14px, 2vw, 16px);
     }
     .tagline{
@@ -127,22 +116,19 @@
       line-height:1.24;
     }
 
-    /* Buttons + a11y */
-    .btn{ display:inline-block; text-decoration:none; border-radius:12px; font-weight:800; transition:transform .06s ease, opacity .12s ease }
+    /* Buttons */
+    .btn{ display:inline-block; text-decoration:none; border-radius:12px; font-weight:800; transition:transform .06s ease }
     .btn:active{ transform: translateY(1px) }
-    .btn:focus-visible{ outline:2px solid var(--gold); outline-offset:2px; border-radius:14px }
     .btn.primary{
       display:block; background:var(--gold); color:#111; border:1px solid rgba(0,0,0,.2);
       padding:12px 16px; width:100%; box-sizing:border-box; margin-top:8px; margin-bottom:6px;
       font-size:14px;
     }
-    .btn.primary:hover{ opacity:.96 }
     .socials{ display:flex; gap:8px; justify-content:center; flex-wrap:wrap; margin-top:6px }
     .btn.secondary{
       background:transparent; color:var(--text); border:1px solid var(--line);
       padding:8px 12px; border-radius:999px; font-size:13px;
     }
-    .btn.secondary:hover{ opacity:.88 }
 
     .meta{
       color:#A8A8A8; font-size:12px; margin-top:8px;
@@ -153,27 +139,43 @@
       font-size:12px; color:#8C8C8C; z-index:1;
     }
 
-    /* Short screens: håll allt på en sida, ingen overlap */
+    /* ===== Short screen handling (no overlap, no scroll) ===== */
+    @media (max-height: 760px){
+      .wrap{ padding-bottom:40px; }
+      .features{ font-size:12px; }
+    }
     @media (max-height: 680px){
+      /* göm one-liner först för att spara plats */
       .oneliner{ display:none; }
+      .subhead{ margin-bottom:6px; }
+      .features{ margin-bottom:8px; }
+      .btn.primary{ margin-top:6px; }
     }
     @media (max-height: 620px){
+      /* om det fortfarande är trångt – gör allt lite mindre */
+      .brand-title{ font-size: clamp(22px, 4vw, 30px); }
+      .copilot{ font-size:12.5px; }
+      .tagline{ font-size:12px; }
+      .subhead{ font-size:12.5px; }
+      .features{ font-size:11.5px; }
+      #bee{ --bee-width-max: 300px; }
+      .bee-wrap{ margin-top: clamp(6px, 3vh, 36px); }
+    }
+    @media (max-height: 560px){
+      /* sista säkerhet: göm features-raden helt för att undvika krockar */
       .features{ display:none; }
+      .meta{ margin-top:6px; }
     }
   </style>
 </head>
 <body>
   <div class="wrap">
-    <!-- Bee -->
     <div class="bee-wrap">
-      <img id="bee" src="bee-logo.png" alt="Beequora bee logo">
+      <img id="bee" src="bee-logo.png" alt="Beequora bee logo" />
     </div>
 
     <div class="card" role="main" aria-labelledby="title">
-      <!-- WORDMARK BILD: exakt samma font som i logon -->
-      <img class="wordmark" id="title" src="beequora-wordmark.svg" alt="Beequora">
-      <!-- Om du använder PNG istället: byt src till beequora-wordmark.png -->
-
+      <h1 id="title" class="brand-title">Beequora</h1>
       <p class="copilot">your conversation copilot</p>
       <p class="tagline">Tiny prompts. Big talk.</p>
 
@@ -198,9 +200,6 @@
   </div>
 
   <footer>© Beequora 2025</footer>
-
-  <!-- Plausible (privacy-first analytics) -->
-  <script defer data-domain="beequora.com" src="https://plausible.io/js/script.js"></script>
 
   <script>
     // Date in sentence, e.g., "13 Nov 2025"
