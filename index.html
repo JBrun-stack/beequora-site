@@ -3,9 +3,9 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Beequora — Better conversations, every day</title>
-  <meta name="description" content="Put fun in conversations and spark meaningful talk with gentle prompts, conversation starters, and micro-coaching for friends, family, and teams.">
-  <meta name="robots" content="index,follow">
+  <title>Beequora — your conversation copilot</title>
+  <meta name="description" content="Tiny prompts. Big talk. Playful starters, live micro-coaching, and thoughtful wrap-ups for better conversations." />
+  <meta name="robots" content="index,follow" />
   <style>
     :root{
       --bg:#000000;
@@ -19,7 +19,7 @@
       --bee-width-min: 216px;
       --bee-width-vw:  30vw;
       --bee-width-max: 360px;
-      --bee-bottom-gap: 8px;      /* was 18px */
+      --bee-bottom-gap: 8px;
       --bee-clip-bottom: 32%;
       --bee-float-amp: 14px;
       --bee-float-sec: 5.2s;
@@ -32,24 +32,19 @@
       -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
     }
 
-    .vignette{
-      position:fixed; inset:0; pointer-events:none; z-index:0;
-      background: radial-gradient(60% 40% at 50% 20%, rgba(251,191,36,.05), transparent 60%);
-    }
-
     .wrap{
       min-height:100dvh; display:flex; align-items:center; justify-content:center;
       padding:24px; padding-bottom:72px; /* room for footer */
       position:relative; z-index:1; flex-direction:column;
     }
 
-    /* --- Bee --- */
+    /* --- Bee (only this animates) --- */
     .bee-wrap{
       position:relative; display:flex; justify-content:center;
-      margin-top: clamp(40px, 8vh, 120px);  /* was clamp(80px, 14vh, 160px) */
+      margin-top: clamp(40px, 8vh, 120px);
       margin-bottom: var(--bee-bottom-gap);
       overflow:hidden;
-      clip-path: inset(0 0 var(--bee-clip-bottom) 0 round 0);
+      clip-path: inset(0 0 var(--bee-clip-bottom) 0 round 0); /* hide any logo text under the bee */
     }
     #bee{
       width: clamp(var(--bee-width-min), var(--bee-width-vw), var(--bee-width-max));
@@ -78,28 +73,47 @@
       margin-top: 0;
     }
 
-    /* Heading + text */
-    h1{
-      margin:6px 0 10px; line-height:1.12; letter-spacing:.15px;
-      font-weight:700; font-size:clamp(22px, 4vw, 36px);
+    /* Tech-clean text */
+    .tagline{
+      font-size: clamp(13px, 1.6vw, 14px);
+      text-transform: none;
+      letter-spacing: .4px;
+      color: var(--sub);
+      margin: 0 0 6px;
     }
-    .brand{ font-weight:780; letter-spacing:.2px }
-    .tag  { font-weight:520; color:var(--sub) }
-
-    p{ margin:0 0 12px; color:#D9D9D9 }
-    .meta{ color:#A8A8A8; font-size:13px; margin-bottom:8px }
+    h1{
+      margin:6px 0 8px; line-height:1.12; letter-spacing:.15px;
+      font-weight:700; font-size:clamp(22px, 4vw, 34px);
+    }
+    .subhead{
+      color:#D9D9D9;
+      margin: 0 0 8px;
+    }
+    .oneliner{
+      color:#CFCFCF;
+      margin: 0 0 12px;
+    }
+    .features{
+      color:#BEBEBE;
+      margin: 0 0 14px;
+      font-size: 14px;
+    }
 
     /* Buttons */
     .btn{ display:inline-block; text-decoration:none; border-radius:12px; font-weight:800; transition:transform .06s ease }
     .btn:active{ transform: translateY(1px) }
     .btn.primary{
       display:block; background:var(--gold); color:#111; border:1px solid rgba(0,0,0,.2);
-      padding:14px 20px; width:100%; box-sizing:border-box; margin-top:14px; margin-bottom:8px;
+      padding:14px 20px; width:100%; box-sizing:border-box; margin-top:10px; margin-bottom:8px;
     }
-    .socials{ display:flex; gap:10px; justify-content:center; flex-wrap:wrap; margin-top:10px }
+    .socials{ display:flex; gap:10px; justify-content:center; flex-wrap:wrap; margin-top:8px }
     .btn.secondary{
       background:transparent; color:var(--text); border:1px solid var(--line);
       padding:10px 14px; border-radius:999px;
+    }
+
+    .meta{
+      color:#A8A8A8; font-size:13px; margin-top:10px;
     }
 
     footer{
@@ -109,18 +123,24 @@
   </style>
 </head>
 <body>
-  <div class="vignette" aria-hidden="true"></div>
-
   <div class="wrap">
     <div class="bee-wrap">
       <img id="bee" src="bee-logo.png" alt="Beequora bee logo" />
     </div>
 
     <div class="card" role="main" aria-labelledby="title">
-      <h1 id="title"><span class="brand">Beequora</span> — <span class="tag">Better conversations, every day</span></h1>
+      <p class="tagline">Tiny prompts. Big talk.</p>
 
-      <p>Put fun in conversations and spark meaningful, real talk with gentle prompts, conversation starters, and micro-coaching for friends, family, and teams.</p>
-      <p class="meta">Keeping conversations fun & meaningful — updated <span id="updated"></span>.</p>
+      <h1 id="title">Beequora — your conversation copilot</h1>
+
+      <p class="subhead">Start faster. Flow better. Finish confident.<br>
+      Playful starters, live micro-coaching, thoughtful wrap-ups.</p>
+
+      <p class="oneliner">Designed for coffee dates, family dinners, and team check-ins.</p>
+
+      <p class="features">
+        300+ starters • Before/During/After coaching • Favorites & Stacks • Group Play (QR) • Private by default • Offline ready
+      </p>
 
       <a class="btn primary" href="#" title="Coming soon">Get the app</a>
 
@@ -128,13 +148,15 @@
         <a class="btn secondary" href="https://www.instagram.com/beequora" target="_blank" rel="noopener">Instagram</a>
         <a class="btn secondary" href="https://www.tiktok.com/@beequora" target="_blank" rel="noopener">TikTok</a>
       </div>
+
+      <p class="meta">Keeping conversations fun & meaningful — updated <span id="updated"></span>.</p>
     </div>
   </div>
 
   <footer>© Beequora 2025</footer>
 
   <script>
-    // Date in sentence, e.g., "updated 13 Nov 2025."
+    // Date in sentence, e.g., "13 Nov 2025"
     const el = document.getElementById('updated');
     try {
       const d = new Date();
