@@ -19,7 +19,7 @@
       --bee-width-min: 216px;
       --bee-width-vw:  30vw;
       --bee-width-max: 360px;
-      --bee-bottom-gap: 8px;
+      --bee-bottom-gap: 6px;     /* lite tajtare under biet */
       --bee-clip-bottom: 32%;
       --bee-float-amp: 14px;
       --bee-float-sec: 5.2s;
@@ -34,17 +34,17 @@
 
     .wrap{
       min-height:100dvh; display:flex; align-items:center; justify-content:center;
-      padding:24px; padding-bottom:72px; /* room for footer */
+      padding:24px; padding-bottom:60px; /* lite mindre för att flytta upp allt */
       position:relative; z-index:1; flex-direction:column;
     }
 
     /* --- Bee (only this animates) --- */
     .bee-wrap{
       position:relative; display:flex; justify-content:center;
-      margin-top: clamp(40px, 8vh, 120px);
+      margin-top: clamp(24px, 6vh, 96px); /* flyttat upp */
       margin-bottom: var(--bee-bottom-gap);
       overflow:hidden;
-      clip-path: inset(0 0 var(--bee-clip-bottom) 0 round 0); /* hide any logo text under the bee */
+      clip-path: inset(0 0 var(--bee-clip-bottom) 0 round 0); /* göm ev. logotext under biet */
     }
     #bee{
       width: clamp(var(--bee-width-min), var(--bee-width-vw), var(--bee-width-max));
@@ -74,16 +74,24 @@
     }
 
     /* Tech-clean text */
+    .brand-title{
+      margin:4px 0 6px;
+      line-height:1.08;
+      letter-spacing:.2px;
+      font-weight:800;
+      font-size: clamp(26px, 5vw, 38px);
+    }
+    .copilot{
+      margin:0 0 8px;
+      color:#D9D9D9;
+      font-weight:600;
+      letter-spacing:.2px;
+    }
     .tagline{
       font-size: clamp(13px, 1.6vw, 14px);
-      text-transform: none;
       letter-spacing: .4px;
       color: var(--sub);
-      margin: 0 0 6px;
-    }
-    h1{
-      margin:6px 0 8px; line-height:1.12; letter-spacing:.15px;
-      font-weight:700; font-size:clamp(22px, 4vw, 34px);
+      margin: 2px 0 10px;
     }
     .subhead{
       color:#D9D9D9;
@@ -129,9 +137,10 @@
     </div>
 
     <div class="card" role="main" aria-labelledby="title">
+      <!-- Beequora överst, sedan copilot på egen rad, sedan tagline -->
+      <h1 id="title" class="brand-title">Beequora</h1>
+      <p class="copilot">your conversation copilot</p>
       <p class="tagline">Tiny prompts. Big talk.</p>
-
-      <h1 id="title">Beequora — your conversation copilot</h1>
 
       <p class="subhead">Start faster. Flow better. Finish confident.<br>
       Playful starters, live micro-coaching, thoughtful wrap-ups.</p>
